@@ -1,6 +1,11 @@
 django-dynaconf
 ==================================
 
+.. image:: https://github.com/mhsiddiqui/django-dynaconf/workflows/Test/badge.svg
+   :target: https://github.com/mhsiddiqui/django-dynaconf/actions
+   :alt: GitHub Actions
+
+
 Django-dynaconf provides dynamic configuration for your Django project which you can control from Django admin. You can change your configurations at any time without any deployment.
 
 **Note**: You cannot add settings required for Django to operate in this like *INSTALLED_APPS*
