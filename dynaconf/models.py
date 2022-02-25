@@ -1,14 +1,13 @@
-import django
 import json
 import re
+from ast import literal_eval
 
+import django
+from dateutil.parser import ParserError, parse
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
-from ast import literal_eval
-
 from django.dispatch import receiver
-from dateutil.parser import parse, ParserError
 
 if django.VERSION < (3, 0):
     from django.utils.translation import ugettext_lazy as _

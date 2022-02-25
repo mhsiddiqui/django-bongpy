@@ -1,4 +1,5 @@
 from django.utils.functional import LazyObject, empty
+
 from dynaconf.models import Configuration
 
 
