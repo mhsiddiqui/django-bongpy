@@ -1,4 +1,6 @@
+import django
 import json
+import re
 
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
@@ -6,8 +8,12 @@ from django.db import models
 from ast import literal_eval
 
 from django.dispatch import receiver
-from django.utils.dateparse import parse_time, parse_date, parse_datetime
-from django.utils.translation import ugettext_lazy as _
+from dateutil.parser import parse, ParserError
+
+if django.VERSION < (3, 0):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 INVALID_VALUE_FOR_TYPE = _('Invalid value for type {type}')
 DATE_SHOULD_BE_IN_FORMAT = _('Date should be in YYYY-MM-DD format')
@@ -69,6 +75,10 @@ class Configuration(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super(Configuration, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.key
 
@@ -87,9 +97,7 @@ class Configuration(models.Model):
             self.clean_datetime()
 
     def clean_number(self):
-        try:
-            literal_eval(self.value)
-        except ValueError:
+        if not re.match(r"-?\d*\.?\d+", self.value):
             raise ValidationError(INVALID_VALUE_FOR_TYPE.format(type='number'))
 
     def clean_boolean(self):
@@ -103,18 +111,21 @@ class Configuration(models.Model):
             raise ValidationError(INVALID_VALUE_FOR_TYPE.format(type='json'))
 
     def clean_date(self):
-        parsed_date = parse_date(self.value)
-        if not parsed_date:
+        try:
+            parse(self.value)
+        except ParserError:
             raise ValidationError(DATE_SHOULD_BE_IN_FORMAT)
 
     def clean_datetime(self):
-        parsed_datetime = parse_datetime(self.value)
-        if not parsed_datetime:
+        try:
+            parse(self.value)
+        except ParserError:
             raise ValidationError(DATETIME_SHOULD_BE_IN_FORMAT)
 
     def clean_time(self):
-        time_value = parse_time(self.value)
-        if not time_value:
+        try:
+            parse(self.value)
+        except ParserError:
             raise ValidationError(TIME_SHOULD_BE_IN_FORMAT)
 
     @property
@@ -129,11 +140,11 @@ class Configuration(models.Model):
         elif self.type == self.JSON:
             return json.loads(self.value)
         elif self.type == self.TIME:
-            return parse_time(self.value)
+            return parse(self.value).time()
         elif self.type == self.DATE:
-            return parse_date(self.value)
+            return parse(self.value).date()
         elif self.type == self.DATETIME:
-            return parse_datetime(self.value)
+            return parse(self.value)
         return self.value
 
 

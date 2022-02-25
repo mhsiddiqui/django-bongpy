@@ -1,9 +1,7 @@
-django-dynaconf
-==================================
+# django-dynaconf
 
-.. image:: https://github.com/mhsiddiqui/django-dynaconf/workflows/Test/badge.svg
-   :target: https://github.com/mhsiddiqui/django-dynaconf/actions
-   :alt: GitHub Actions
+[![Build](https://github.com/mhsiddiqui/django-dynaconf/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/mhsiddiqui/django-dynaconf/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/mhsiddiqui/django-dynaconf/branch/main/graph/badge.svg?token=FFXY6AZEDQ)](https://codecov.io/gh/mhsiddiqui/django-dynaconf)
+
 
 
 Django-dynaconf provides dynamic configuration for your Django project which you can control from Django admin. You can change your configurations at any time without any deployment.
@@ -11,30 +9,26 @@ Django-dynaconf provides dynamic configuration for your Django project which you
 **Note**: You cannot add settings required for Django to operate in this like *INSTALLED_APPS*
 
 
-Setup
------
+# Setup
+
 
 1. Run below command to install.
 
-.. code-block::
-
-    pip install django-dynaconf
+> pip install django-dynaconf
 
 2. Add `dynaconf` in your INSTALLED_APPS.
 3. Run migration by running following command
 
-.. code-block::
-
-    python manage.py migrate
+> python manage.py migrate
 
 Usage
 _____
 Just go to your admin dashboard, in Dynaconf section, add configurations. In your code, you can use it like this.
 
-.. code-block::
-
-    from dynaconf.configs import configs
-    print(configs.KEY_OF_YOUR_CONFIGURATION)
+```python
+from dynaconf.configs import configs
+print(configs.KEY_OF_YOUR_CONFIGURATION)
+```
 
 
 At any time, when you will change your config value or add a new value, it will be available to use in you code.

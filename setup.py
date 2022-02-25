@@ -1,7 +1,8 @@
+import codecs
 import os
 import re
-import codecs
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 
 def read(*parts):
@@ -24,7 +25,8 @@ setup(
     version=find_version("dynaconf", "__init__.py"),
     url="https://github.com/mhsiddiqui/django-dynaconf",
     description='Dynamic Configuration for your Django project',
-    long_description=read('README.rst'),
+    long_description=read('README.md'),
+    long_description_content_type='text/markdown',
     author='Muhammad Hassan Siddiqui',
     author_email='mhassan.eeng@gmail.com',
     license='MIT',
@@ -44,7 +46,6 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -58,9 +59,10 @@ setup(
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
     zip_safe=False,
-    python_requires='>=2.7',
+    python_requires='>=3',
     extras_require={
-        'django': ['Django>1.10']
+        'django': ['Django>1.10'],
+        'dateutil': ['python-dateutil']
     },
     # entry_points={
     #     'pytest11': [
