@@ -44,15 +44,15 @@ It supports following types of configurations. You need to set correct type for 
 * Datetime
 * Time
 
-###String
+### String
 
 By default every value will be string.   
 
-###Number
+### Number
 
 Number includes integers as well as decimal numbers. 
 
-###Boolean
+### Boolean
 
 For boolean value, see below chart.
 
