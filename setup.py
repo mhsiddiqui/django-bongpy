@@ -63,10 +63,5 @@ setup(
     extras_require={
         'django': ['Django>1.10'],
         'dateutil': ['python-dateutil']
-    },
-    # entry_points={
-    #     'pytest11': [
-    #         'pytest-django-constance = constance.test.pytest',
-    #     ],
-    # },
+    }
 )
