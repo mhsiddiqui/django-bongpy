@@ -18,7 +18,7 @@ Django-dynaconf provides dynamic configuration for your Django project which you
 
 > pip install django-dynaconf
 
-2. Add `dynaconf` in your INSTALLED_APPS.
+2. Add `django_dynaconf` in your INSTALLED_APPS.
 3. Run migration by running following command
 
 > python manage.py migrate
@@ -88,7 +88,8 @@ Time should be in `HH:MM:SS` format and it will be converted to `datetime.time` 
 In your code, you can use it like this.
 
 ```python
-from dynaconf.configs import configs
+from django_dynaconf.configs import configs
+
 print(configs.KEY_OF_YOUR_CONFIGURATION)
 ```
 

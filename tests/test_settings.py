@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'dynaconf',
+    'django_dynaconf',
     'tests',
 ]
 

@@ -22,7 +22,7 @@ def find_version(*file_paths):
 
 setup(
     name='django-dynaconf',
-    version=find_version("dynaconf", "__init__.py"),
+    version=find_version("django_dynaconf", "__init__.py"),
     url="https://github.com/mhsiddiqui/django-dynaconf",
     description='Dynamic Configuration for your Django project',
     long_description=read('README.md'),

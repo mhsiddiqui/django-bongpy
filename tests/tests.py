@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from dynaconf.configs import configs
-from dynaconf.models import FALSE_VALUES, TRUE_VALUES, Configuration
+from django_dynaconf.configs import configs
+from django_dynaconf.models import FALSE_VALUES, TRUE_VALUES, Configuration
 
 
 class TestData(object):

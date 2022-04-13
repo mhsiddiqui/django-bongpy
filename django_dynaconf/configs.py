@@ -1,6 +1,6 @@
 from django.utils.functional import LazyObject, empty
 
-from dynaconf.models import Configuration
+from .models import Configuration
 
 
 class Configs(object):
