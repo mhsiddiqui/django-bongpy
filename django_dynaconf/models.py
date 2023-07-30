@@ -49,7 +49,7 @@ class Configuration(models.Model):
     DATE = 'date'
     DATETIME = 'datetime'
     TIME = 'time'
-    DEFAULT_GROUP = 'default'
+    DEFAULT_GROUP = 'DEFAULT'
     VALUE_TYPE = (
         (STRING, _('String')),
         (NUMBER, _('Number')),
@@ -65,6 +65,14 @@ class Configuration(models.Model):
             message=_('Key can only contains uppercase letters, numbers and _')
         )
     ])
+    group = models.CharField(
+        max_length=100, default=DEFAULT_GROUP, validators=[
+            RegexValidator(
+                regex=r"[A-Z\d_]+",
+                message=_('Group can only contains uppercase letters, numbers and _')
+            )
+        ]
+    )
     description = models.CharField(
         max_length=200, null=True, blank=True, help_text=_('Description of configuration')
     )

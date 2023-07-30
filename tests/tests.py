@@ -88,6 +88,34 @@ class TestData(object):
         'type': Configuration.DATE
     }
 
+    GROUP_1_KEY_1 = {
+        'key': 'GROUP_1_KEY_1',
+        'group': 'G1',
+        'value': 'value',
+        'type': Configuration.STRING
+    }
+
+    GROUP_1_KEY_2 = {
+        'key': 'GROUP_1_KEY_2',
+        'group': 'G1',
+        'value': '2',
+        'type': Configuration.NUMBER
+    }
+
+    GROUP_2_KEY_1 = {
+        'key': 'GROUP_2_KEY_1',
+        'group': 'G2',
+        'value': 'True',
+        'type': Configuration.BOOLEAN
+    }
+
+    GROUP_2_KEY_2 = {
+        'key': 'GROUP_2_KEY_2',
+        'group': 'G2',
+        'value': 'string',
+        'type': Configuration.STRING
+    }
+
 
 class DynaConfTests(TestCase):
     def test_valid_creating_string_config(self):
@@ -198,3 +226,22 @@ class DynaConfTests(TestCase):
             self.assertTrue(False, 'Added invalid config value')
         except ValidationError:
             self.assertTrue(True)
+
+    def test_grouped_config(self):
+        group_1_key_1 = Configuration.objects.create(**TestData.GROUP_1_KEY_1)
+        group_1_key_2 = Configuration.objects.create(**TestData.GROUP_1_KEY_2)
+        Configuration.objects.create(**TestData.GROUP_2_KEY_1)
+        Configuration.objects.create(**TestData.GROUP_2_KEY_2)
+        # Check g1 configs
+        g1_configs = configs.grouped(group=TestData.GROUP_1_KEY_1.get('group'))
+        self.assertTrue(hasattr(g1_configs, TestData.GROUP_1_KEY_1.get('key')))
+        self.assertTrue(hasattr(g1_configs, TestData.GROUP_1_KEY_2.get('key')))
+        self.assertTrue(not hasattr(g1_configs, TestData.GROUP_2_KEY_1.get('key')))
+        self.assertTrue(not hasattr(g1_configs, TestData.GROUP_2_KEY_2.get('key')))
+
+        self.assertEqual(
+            getattr(g1_configs, TestData.GROUP_1_KEY_1.get('key')), group_1_key_1.conf_value
+        )
+        self.assertEqual(
+            getattr(g1_configs, TestData.GROUP_1_KEY_2.get('key')), group_1_key_2.conf_value
+        )

@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.utils.functional import LazyObject, empty
 
 from .models import Configuration
@@ -83,6 +84,15 @@ class LazyConfigs(LazyObject):
         Returns True if the configuration have already been configured.
         """
         return self._wrapped is not empty
+
+    def grouped(self, group):
+        """
+        Return grouped configurations
+        """
+        configurations = Configuration.objects.filter(group=group, is_active=True)
+        if configurations.exists():
+            return Configs(configurations=configurations)
+        return empty
 
 
 configs = LazyConfigs()

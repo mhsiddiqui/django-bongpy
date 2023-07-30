@@ -94,3 +94,13 @@ print(configs.KEY_OF_YOUR_CONFIGURATION)
 ```
 
 At any time, when you will change your config value or add a new value, it will be available to use in you code.
+
+## Grouping (v1.2)
+
+You can group configurations. Configurations of a perticular group can be accessed like this.
+
+```python
+from django_dynaconf.configs import configs
+
+print(configs.grouped(group='NAME_OF_GROUP'))
+```

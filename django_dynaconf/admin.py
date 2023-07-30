@@ -12,7 +12,7 @@ from .models import Configuration
 @admin.register(Configuration)
 class ConfigurationAdmin(admin.ModelAdmin):
     list_filter = ['type']
-    list_display = ['key', 'value', 'is_active', 'type', 'created', 'modified']
+    list_display = ['key', 'value', 'group', 'is_active', 'type', 'created', 'modified']
     search_fields = ['key', 'value']
     ordering = ['-is_active']
 
