@@ -16,4 +16,3 @@ class ConfigurationAdmin(admin.ModelAdmin):
     search_fields = ['key', 'value']
     ordering = ['-is_active']
 
-
