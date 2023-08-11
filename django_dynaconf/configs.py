@@ -1,6 +1,6 @@
 from collections import defaultdict
 from django.utils.functional import LazyObject, empty
-
+from django.conf import settings
 from .models import Configuration
 
 
@@ -19,15 +19,19 @@ class Configs(object):
         :param configurations: list/queryset of configuration
         """
         self.CONFIGURATION_COUNT = configurations.count()
+        dynaconf_defaults = getattr(settings, 'DYNACONF_DEFAULTS', {})
+        for config_key, config_default in dynaconf_defaults.items():
+            self.update(config_key, config_default)
         for configuration in configurations:
-            self.update(configuration)
+            self.update(configuration.key, configuration.conf_value)
 
-    def update(self, config):
+    def update(self, key, value):
         """
         Update or add configuration
-        :param config: configuration object
+        :param key: configuration key
+        :param value: configuration value
         """
-        setattr(self, config.key, config.conf_value)
+        setattr(self, key, value)
 
 
 class LazyConfigs(LazyObject):
@@ -66,14 +70,14 @@ class LazyConfigs(LazyObject):
         super(LazyConfigs, self).__delattr__(name)
         self.__dict__.pop(name, None)
 
-    def configure(self, config):
+    def configure(self, configuration):
         """
         Configure a configuration
-        :param config: a config object
+        :param configuration: a config object
         """
         if self._wrapped is not empty:
             configs_obj = self._wrapped
-            configs_obj.update(config)
+            configs_obj.update(configuration.key, configuration.conf_value)
             self._wrapped = configs_obj
         else:
             self._setup()

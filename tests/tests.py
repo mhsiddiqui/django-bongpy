@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -113,6 +114,24 @@ class TestData(object):
         'key': 'GROUP_2_KEY_2',
         'group': 'G2',
         'value': 'string',
+        'type': Configuration.STRING
+    }
+
+    DEFAULT_BOOLEAN = {
+        'key': 'BOOLEAN_KEY',
+        'value': 'true',
+        'type': Configuration.BOOLEAN
+    }
+
+    DEFAULT_NUMBER = {
+        'key': 'INTEGER_KEY',
+        'value': '10',
+        'type': Configuration.NUMBER
+    }
+
+    DEFAULT_STRING = {
+        'key': 'STRING_KEY',
+        'value': 'string updated',
         'type': Configuration.STRING
     }
 
@@ -245,3 +264,17 @@ class DynaConfTests(TestCase):
         self.assertEqual(
             getattr(g1_configs, TestData.GROUP_1_KEY_2.get('key')), group_1_key_2.conf_value
         )
+
+    def test_default_config_values(self):
+        BOOLEAN_KEY = configs.BOOLEAN_KEY
+        INTEGER_KEY = configs.INTEGER_KEY
+        STRING_KEY = configs.STRING_KEY
+        self.assertEqual(BOOLEAN_KEY, settings.DYNACONF_DEFAULTS.get('BOOLEAN_KEY'))
+        self.assertEqual(INTEGER_KEY, settings.DYNACONF_DEFAULTS.get('INTEGER_KEY'))
+        self.assertEqual(STRING_KEY, settings.DYNACONF_DEFAULTS.get('STRING_KEY'))
+        boolean = Configuration.objects.create(**TestData.DEFAULT_BOOLEAN)
+        number = Configuration.objects.create(**TestData.DEFAULT_NUMBER)
+        string = Configuration.objects.create(**TestData.DEFAULT_STRING)
+        self.assertEqual(True, boolean.conf_value)
+        self.assertEqual(10, number.conf_value)
+        self.assertEqual('string updated', string.conf_value)

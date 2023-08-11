@@ -25,7 +25,7 @@ Django-dynaconf provides dynamic configuration for your Django project which you
 
 # Usage
 _____
-Just go to your admin dashboard, in Dynaconf section, add configurations. 
+Just go to your admin dashboard, in the Dynaconf section, add configurations. 
 
 ## Listing
 ![image info](./images/listing.png)
@@ -35,7 +35,7 @@ Just go to your admin dashboard, in Dynaconf section, add configurations.
 
 ## Config Type
 
-It supports following types of configurations. You need to set correct type for your value otherwise value will be treated as string value and will not be processed into actual data type.
+It supports the following types of configurations. You need to set the correct type for your value otherwise value will be treated as string value and will not be processed into actual data type.
 * String
 * Number
 * Boolean
@@ -73,7 +73,7 @@ For boolean value, see below chart.
 |   1  |   0   |
 
 ### Json
-A valid json is required when config type is selected as Json.
+A valid json is required when the config type is selected as Json.
 
 ### Date
 Date should be in `YYYY-MM-DD` format. It will be converted to `datetime.date` object.
@@ -95,12 +95,24 @@ print(configs.KEY_OF_YOUR_CONFIGURATION)
 
 At any time, when you will change your config value or add a new value, it will be available to use in you code.
 
-## Grouping (v1.2)
+## Grouping
 
-You can group configurations. Configurations of a perticular group can be accessed like this.
+You can group configurations. Configurations of a particular group can be accessed like this.
 
 ```python
 from django_dynaconf.configs import configs
 
 print(configs.grouped(group='NAME_OF_GROUP'))
 ```
+
+## Default value
+
+It is quite possible when you are using a configuration in your code and you have not added that configuration yet. In this case it is best to define a default value of that configuration in your settings so that that default value will be used instead of an error. To define default value of your configurations, define `DYNACONF_DEFAULTS` in settings like this
+
+```python
+DYNACONF_DEFAULTS = {
+    "KEY_1": True,
+    "KEY_2": 2000
+}
+```
+When this key will be added, that value will be used instead of this default value.

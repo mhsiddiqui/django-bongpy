@@ -50,3 +50,8 @@ TEMPLATES = [
     }
 ]
 
+DYNACONF_DEFAULTS = {
+    'BOOLEAN_KEY': False,
+    'INTEGER_KEY': 5,
+    'STRING_KEY': 'string default'
+}
