@@ -40,8 +40,7 @@ class LazyConfigs(LazyObject):
     """
     def _setup(self):
         configurations = Configuration.objects.filter(is_active=True)
-        if configurations.exists():
-            self._wrapped = Configs(configurations=configurations)
+        self._wrapped = Configs(configurations=configurations)
 
     def __getattr__(self, name):
         """
