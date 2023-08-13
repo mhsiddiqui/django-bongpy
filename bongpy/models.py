@@ -1,3 +1,4 @@
+import datetime
 import json
 import re
 from ast import literal_eval
@@ -18,7 +19,6 @@ INVALID_VALUE_FOR_TYPE = _('Invalid value for type {type}')
 DATE_SHOULD_BE_IN_FORMAT = _('Date should be in YYYY-MM-DD format')
 DATETIME_SHOULD_BE_IN_FORMAT = _('Datetime should be in "YYYY-MM-DD HH:MM:SS" format')
 TIME_SHOULD_BE_IN_FORMAT = _('Time should be in HH:MM:SS format')
-
 
 TRUE_VALUES = {
     't', 'T',
@@ -161,4 +161,24 @@ def update_config_object(sender, instance, created, **kwarg):
     Update config object if a new object is added or already added object changes
     """
     from .configs import configs
-    configs.configure(instance)
+    configs.configure(configuration=instance)
+
+
+def get_configuration_type(value):
+    """
+    Return configuration type by its value
+    """
+    if isinstance(value, bool):
+        return Configuration.BOOLEAN
+    elif isinstance(value, int):
+        return Configuration.NUMBER
+    elif isinstance(value, str):
+        return Configuration.STRING
+    elif type(value) == datetime.date:
+        return Configuration.DATE
+    elif type(value) == datetime.datetime:
+        return Configuration.DATETIME
+    elif type(value) == datetime.time:
+        return Configuration.TIME
+    elif isinstance(value, (list, dict)):
+        return Configuration.JSON

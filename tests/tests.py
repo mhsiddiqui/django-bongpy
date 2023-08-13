@@ -1,9 +1,11 @@
+import datetime
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from bongpy.configs import configs
-from bongpy.models import FALSE_VALUES, TRUE_VALUES, Configuration
+from bongpy.models import FALSE_VALUES, TRUE_VALUES, Configuration, get_configuration_type
 
 
 class TestData(object):
@@ -117,23 +119,16 @@ class TestData(object):
         'type': Configuration.STRING
     }
 
-    DEFAULT_BOOLEAN = {
-        'key': 'BOOLEAN_KEY',
-        'value': 'true',
-        'type': Configuration.BOOLEAN
-    }
-
-    DEFAULT_NUMBER = {
-        'key': 'INTEGER_KEY',
-        'value': '10',
-        'type': Configuration.NUMBER
-    }
-
-    DEFAULT_STRING = {
-        'key': 'STRING_KEY',
-        'value': 'string updated',
-        'type': Configuration.STRING
-    }
+    CONFIG_TYPES = [
+        {"value": True, "type": Configuration.BOOLEAN},
+        {"value": 12, "type": Configuration.NUMBER},
+        {"value": "string", "type": Configuration.STRING},
+        {"value": datetime.datetime.now().date(), "type": Configuration.DATE},
+        {"value": datetime.datetime.now(), "type": Configuration.DATETIME},
+        {"value": datetime.datetime.now().time(), "type": Configuration.TIME},
+        {"value": [1, 2, 3], "type": Configuration.JSON},
+        {"value": {"1": 1, "2": 2}, "type": Configuration.JSON},
+    ]
 
 
 class BongPyTests(TestCase):
@@ -266,15 +261,15 @@ class BongPyTests(TestCase):
         )
 
     def test_default_config_values(self):
-        BOOLEAN_KEY = configs.BOOLEAN_KEY
-        INTEGER_KEY = configs.INTEGER_KEY
-        STRING_KEY = configs.STRING_KEY
-        self.assertEqual(BOOLEAN_KEY, settings.BONGPY_DEFAULTS.get('BOOLEAN_KEY'))
-        self.assertEqual(INTEGER_KEY, settings.BONGPY_DEFAULTS.get('INTEGER_KEY'))
-        self.assertEqual(STRING_KEY, settings.BONGPY_DEFAULTS.get('STRING_KEY'))
-        boolean = Configuration.objects.create(**TestData.DEFAULT_BOOLEAN)
-        number = Configuration.objects.create(**TestData.DEFAULT_NUMBER)
-        string = Configuration.objects.create(**TestData.DEFAULT_STRING)
-        self.assertEqual(True, boolean.conf_value)
-        self.assertEqual(10, number.conf_value)
-        self.assertEqual('string updated', string.conf_value)
+        configs.init()
+        all_defaults = set(Configuration.objects.all().values_list('key', flat=True))
+        for key, value in settings.BONGPY_DEFAULTS.items():
+            self.assertEqual(getattr(configs, key), settings.BONGPY_DEFAULTS.get(key))
+            self.assertTrue(key in all_defaults, "{} not found".format(key))
+
+    def test_get_configuration_type(self):
+        for conf_type in TestData.CONFIG_TYPES:
+            self.assertEqual(
+                get_configuration_type(conf_type.get('value')), conf_type.get('type'),
+                conf_type
+            )

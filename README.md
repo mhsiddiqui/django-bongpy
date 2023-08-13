@@ -109,4 +109,4 @@ BONGPY_DEFAULTS = {
     "KEY_2": 2000
 }
 ```
-When this key will be added, that value will be used instead of this default value.
+When this key will be added, that value will be used instead of this default value. These configurations will be loaded in database automatically.

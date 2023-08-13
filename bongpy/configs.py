@@ -1,6 +1,8 @@
+import json
+
 from django.utils.functional import LazyObject, empty
 from django.conf import settings
-from .models import Configuration
+from .models import Configuration, get_configuration_type
 
 
 class Configs(object):
@@ -18,9 +20,6 @@ class Configs(object):
         :param configurations: list/queryset of configuration
         """
         self.CONFIGURATION_COUNT = configurations.count()
-        bongpy_defaults = getattr(settings, 'BONGPY_DEFAULTS', {})
-        for config_key, config_default in bongpy_defaults.items():
-            self.update(config_key, config_default)
         for configuration in configurations:
             self.update(configuration.key, configuration.conf_value)
 
@@ -37,9 +36,37 @@ class LazyConfigs(LazyObject):
     """
     A lazy proxy for configuration.
     """
+
     def _setup(self):
-        configurations = Configuration.objects.filter(is_active=True)
-        self._wrapped = Configs(configurations=configurations)
+        self.init()
+
+    @property
+    def active_configurations(self):
+        """
+        Return active configurations
+        """
+        return Configuration.objects.filter(is_active=True)
+
+    def load_initial_data(self):
+        """
+        Load data from defaults
+        """
+        defaults = getattr(settings, 'BONGPY_DEFAULTS', {})
+        existing_keys = set(
+            Configuration.objects.filter(key__in=defaults.keys()).values_list('key', flat=True)
+        )
+        configurations = []
+        for key, value in defaults.items():
+            if key not in existing_keys:
+                conf_type = get_configuration_type(value)
+                if conf_type == Configuration.JSON:
+                    value = json.dumps(value)
+                else:
+                    value = str(value)
+                configurations.append(Configuration(
+                    key=key, value=value, type=conf_type
+                ))
+        Configuration.objects.bulk_create(configurations)
 
     def __getattr__(self, name):
         """
@@ -67,6 +94,13 @@ class LazyConfigs(LazyObject):
         """
         super(LazyConfigs, self).__delattr__(name)
         self.__dict__.pop(name, None)
+
+    def init(self):
+        """
+        Initialize cpnfig object. This can be used to refresh configurations
+        """
+        self.load_initial_data()
+        self._wrapped = Configs(configurations=self.active_configurations)
 
     def configure(self, configuration):
         """

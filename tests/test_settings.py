@@ -1,3 +1,4 @@
+import datetime
 import os
 
 import django
@@ -10,7 +11,6 @@ SECRET_KEY = ")cqmpi+p@n&!u&fu@!m@9h&1bz9mwmstsahe)nf!ms+c$uc=x7"
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 DATABASES = {
     "default": {
@@ -36,7 +36,6 @@ MIDDLEWARE_CLASSES = [
 
 MIDDLEWARE = MIDDLEWARE_CLASSES
 
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -51,7 +50,18 @@ TEMPLATES = [
 ]
 
 BONGPY_DEFAULTS = {
-    'BOOLEAN_KEY': False,
-    'INTEGER_KEY': 5,
-    'STRING_KEY': 'string default'
+    'BOOLEAN_KEY_DEFAULT': False,
+    'INTEGER_KEY_DEFAULT': 5,
+    'STRING_KEY_DEFAULT': 'string default',
+    'DATE_KEY_DEFAULT': datetime.datetime.now().date(),
+    'DATETIME_KEY_DEFAULT': datetime.datetime.now(),
+    'TIME_KEY_DEFAULT': datetime.datetime.now().time(),
+    'LIST_KEY_DEFAULT': [1, 2, 3],
+    'DICT_KEY_DEFAULT': {"1": 1, "2": 2},
+    'JSON_KEY_DEFAULT': {
+        "a": [1, 2, 3],
+        "b": {
+            "a": 1
+        }
+    },
 }

@@ -15,4 +15,3 @@ class ConfigurationAdmin(admin.ModelAdmin):
     list_display = ['key', 'value', 'group', 'is_active', 'type', 'created', 'modified']
     search_fields = ['key', 'value']
     ordering = ['-is_active']
-
