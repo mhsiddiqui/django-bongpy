@@ -25,13 +25,7 @@ Django-bongpy provides dynamic configuration for your Django project which you c
 
 # Usage
 _____
-Just go to your admin dashboard, in the Bongpy section, add configurations. 
-
-## Listing
-![image info](./images/listing.png)
-
-## Form
-![image info](./images/form.png)
+Just go to your admin dashboard, in the Bongpy section, add configurations.
 
 ## Config Type
 
