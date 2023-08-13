@@ -1,4 +1,3 @@
-from collections import defaultdict
 from django.utils.functional import LazyObject, empty
 from django.conf import settings
 from .models import Configuration
@@ -19,8 +18,8 @@ class Configs(object):
         :param configurations: list/queryset of configuration
         """
         self.CONFIGURATION_COUNT = configurations.count()
-        dynaconf_defaults = getattr(settings, 'DYNACONF_DEFAULTS', {})
-        for config_key, config_default in dynaconf_defaults.items():
+        bongpy_defaults = getattr(settings, 'BONGPY_DEFAULTS', {})
+        for config_key, config_default in bongpy_defaults.items():
             self.update(config_key, config_default)
         for configuration in configurations:
             self.update(configuration.key, configuration.conf_value)

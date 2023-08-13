@@ -2,8 +2,8 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from django_dynaconf.configs import configs
-from django_dynaconf.models import FALSE_VALUES, TRUE_VALUES, Configuration
+from bongpy.configs import configs
+from bongpy.models import FALSE_VALUES, TRUE_VALUES, Configuration
 
 
 class TestData(object):
@@ -136,7 +136,7 @@ class TestData(object):
     }
 
 
-class DynaConfTests(TestCase):
+class BongPyTests(TestCase):
     def test_valid_creating_string_config(self):
         config = Configuration.objects.create(**TestData.VALID_STRING)
         self.assertEqual(
@@ -269,9 +269,9 @@ class DynaConfTests(TestCase):
         BOOLEAN_KEY = configs.BOOLEAN_KEY
         INTEGER_KEY = configs.INTEGER_KEY
         STRING_KEY = configs.STRING_KEY
-        self.assertEqual(BOOLEAN_KEY, settings.DYNACONF_DEFAULTS.get('BOOLEAN_KEY'))
-        self.assertEqual(INTEGER_KEY, settings.DYNACONF_DEFAULTS.get('INTEGER_KEY'))
-        self.assertEqual(STRING_KEY, settings.DYNACONF_DEFAULTS.get('STRING_KEY'))
+        self.assertEqual(BOOLEAN_KEY, settings.BONGPY_DEFAULTS.get('BOOLEAN_KEY'))
+        self.assertEqual(INTEGER_KEY, settings.BONGPY_DEFAULTS.get('INTEGER_KEY'))
+        self.assertEqual(STRING_KEY, settings.BONGPY_DEFAULTS.get('STRING_KEY'))
         boolean = Configuration.objects.create(**TestData.DEFAULT_BOOLEAN)
         number = Configuration.objects.create(**TestData.DEFAULT_NUMBER)
         string = Configuration.objects.create(**TestData.DEFAULT_STRING)

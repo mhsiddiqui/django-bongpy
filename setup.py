@@ -21,9 +21,9 @@ def find_version(*file_paths):
 
 
 setup(
-    name='django-dynaconf',
-    version=find_version("django_dynaconf", "__init__.py"),
-    url="https://github.com/mhsiddiqui/django-dynaconf",
+    name='django-bongpy',
+    version=find_version("bongpy", "__init__.py"),
+    url="https://github.com/mhsiddiqui/django-bongpy",
     description='Dynamic Configuration for your Django project',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',

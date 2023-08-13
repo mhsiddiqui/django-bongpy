@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'django_dynaconf',
+    'bongpy',
     'tests',
 ]
 
@@ -50,7 +50,7 @@ TEMPLATES = [
     }
 ]
 
-DYNACONF_DEFAULTS = {
+BONGPY_DEFAULTS = {
     'BOOLEAN_KEY': False,
     'INTEGER_KEY': 5,
     'STRING_KEY': 'string default'

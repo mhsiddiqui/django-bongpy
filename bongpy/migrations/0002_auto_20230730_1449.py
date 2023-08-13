@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_dynaconf', '0001_initial'),
+        ('bongpy', '0001_initial'),
     ]
 
     operations = [
